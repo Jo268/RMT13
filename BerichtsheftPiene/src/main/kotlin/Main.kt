@@ -15,6 +15,7 @@ fun main(args: Array<String>) {
 
 //Get Mite data
 fun run(client: OkHttpClient, i: Int): List<String> {
+    // TODO: Use calculateWeek() to generate the reports dynamically
     var   to = LocalDate.of(2021, 8,6)
     when (i){
         2 -> to = to.plusDays(7)
