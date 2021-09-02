@@ -26,6 +26,9 @@ fun run(client: OkHttpClient, i: Int): List<String> {
 
     println(to)
     println(from)
+
+    // TODO: Read the api_key from a file so that it is no longer part of the source code.
+    // TODO: Aftewards add the file to the .gitignore so that the api_key is no longer part of the repository.
     val request = Request.Builder()
         .url("https://smartsquare.mite.yo.lk/time_entries.json?api_key=8d7fa1efdda9016b&from=$from&to=$to")
         .build()
