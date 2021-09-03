@@ -1,6 +1,7 @@
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.*
+import java.io.BufferedReader
 import java.io.File
 import java.time.LocalDate
 
@@ -13,7 +14,7 @@ fun main(args: Array<String>) {
     }
 }
 
-//Get Mite data
+    //Get Mite data
 fun run(client: OkHttpClient, i: Int): List<String> {
     // TODO: Use calculateWeek() to generate the reports dynamically
     var   to = LocalDate.of(2021, 8,6)
@@ -27,10 +28,12 @@ fun run(client: OkHttpClient, i: Int): List<String> {
     println(to)
     println(from)
 
-    // TODO: Read the api_key from a file so that it is no longer part of the source code.
-    // TODO: Aftewards add the file to the .gitignore so that the api_key is no longer part of the repository.
+    // Read the api-key from file
+    val bufferedReader: BufferedReader = File("/Users/admin/Desktop/Programming/joluca/BerichtsheftPiene/src/main/kotlin/API.txt").bufferedReader()
+    val inputString = bufferedReader.use { it.readText() }
+
     val request = Request.Builder()
-        .url("https://smartsquare.mite.yo.lk/time_entries.json?api_key=8d7fa1efdda9016b&from=$from&to=$to")
+        .url("https://smartsquare.mite.yo.lk/time_entries.json?api_key=$inputString&from=$from&to=$to")
         .build()
 
     val responseBody = client.newCall(request).execute().body
@@ -39,7 +42,7 @@ fun run(client: OkHttpClient, i: Int): List<String> {
     return wrapList.map { it.time_entry.note }
 }
 
-//create a new file
+    //create a new file
 fun createFile(week: Int, i: Int) {
     val client = OkHttpClient()
     var meinBericht = run(client, i).joinToString(separator = System.lineSeparator())
