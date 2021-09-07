@@ -3,37 +3,37 @@ import com.google.gson.reflect.TypeToken
 import okhttp3.*
 import java.io.BufferedReader
 import java.io.File
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.util.stream.Collectors
 
 
 fun main(args: Array<String>) {
     //calculate working days
-    val weeks = listOf<Int>(1, 2, 3, 4)
-    for (i in weeks){
-        createFile(i, i)
+    val startAusbildung = LocalDate.of(2021,8,2)
+    val letzterFreitag = LocalDate.now().with(DayOfWeek.FRIDAY)
+    val monDayOfWeek = startAusbildung.datesUntil(letzterFreitag)
+        .filter { it.dayOfWeek == DayOfWeek.MONDAY }
+        .collect(Collectors.toList())
+    println(monDayOfWeek)
+    var indexWeek = 1
+    for (mondays in monDayOfWeek){
+
+        createFile(indexWeek, mondays)
+        indexWeek += 1
     }
 }
 
     //Get Mite data
-fun run(client: OkHttpClient, i: Int): List<String> {
-    // TODO: Use calculateWeek() to generate the reports dynamically
-    var   to = LocalDate.of(2021, 8,6)
-    when (i){
-        2 -> to = to.plusDays(7)
-        3 -> to = to.plusDays(14)
-        4 -> to = to.plusDays(21)
-    }
-    val from = to.minusDays(4)
-
-    println(to)
-    println(from)
+fun run(client: OkHttpClient, mondays: LocalDate): List<String> {
+    var   fridays = mondays.plusDays(4)
 
     // Read the api-key from file
     val bufferedReader: BufferedReader = File("/Users/admin/Desktop/Programming/joluca/BerichtsheftPiene/src/main/kotlin/API.txt").bufferedReader()
     val inputString = bufferedReader.use { it.readText() }
 
     val request = Request.Builder()
-        .url("https://smartsquare.mite.yo.lk/time_entries.json?api_key=$inputString&from=$from&to=$to")
+        .url("https://smartsquare.mite.yo.lk/time_entries.json?api_key=$inputString&from=$mondays&to=$fridays")
         .build()
 
     val responseBody = client.newCall(request).execute().body
@@ -43,11 +43,13 @@ fun run(client: OkHttpClient, i: Int): List<String> {
 }
 
     //create a new file
-fun createFile(week: Int, i: Int) {
+fun createFile(indexWeek: Int, mondays: LocalDate) {
     val client = OkHttpClient()
-    var meinBericht = run(client, i).joinToString(separator = System.lineSeparator())
-    println(meinBericht)
-    val fileName = "Berichtsheft_0$week.08.21.txt"
+    var meinBericht = run(client, mondays).joinToString(separator = System.lineSeparator())
+        //ausgabe testen
+        println(meinBericht)
+
+    val fileName = "Berichtsheft_Woche_$indexWeek.txt"
     var file = File(fileName)
 
     file.writeText("$meinBericht")
