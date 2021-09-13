@@ -8,10 +8,15 @@ import java.util.*
 fun createFile(mondays: LocalDate, report: String) {
     var week = mondays.get(        WeekFields.of(Locale.GERMANY).weekOfMonth())
     var monat = mondays.monthValue
+    var jahr = mondays.year
     if (week == 5){
         week = 1
+        monat += 1
     }
-    val jahr = mondays.year
+    if (monat == 13){
+        monat = 1
+        jahr += 1
+    }
     val fileName = "Berichtsheft_Woche_$week.txt"
     val directory = File("meineBerichtshefte/Jahr${jahr}Monat$monat")
     val file = File(directory, fileName)
