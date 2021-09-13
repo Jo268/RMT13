@@ -1,24 +1,19 @@
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.util.stream.Collectors
-
+import okhttp3.OkHttpClient
 
 fun main(args: Array<String>) {
-    //calculate working days
-    val startAusbildung = LocalDate.of(2021,8,2)
-    val letzterFreitag = LocalDate.now().with(DayOfWeek.FRIDAY)
-    val monDayOfWeek = startAusbildung.datesUntil(letzterFreitag)
-        .filter { it.dayOfWeek == DayOfWeek.MONDAY }
-        .collect(Collectors.toList())
-    var indexWeek = 1
+    if(args.isEmpty()){
+        throw error("APIKEY erwartet.")
+    }
+    val apiKey = args[0]
+    val httpClient = OkHttpClient()
+    val miteClient = MiteClient(httpClient, apiKey)
+    val monDayOfWeek = timespanCalculator()
     for (mondays in monDayOfWeek){
-        createFile(indexWeek, mondays)  //ruft die createFile funktion auf
-        indexWeek += 1
+        val fridays = mondays.plusDays(4)
+        val entries = miteClient.fetchEntries(mondays, fridays).joinToString(separator = System.lineSeparator())
+        createFile(mondays,entries)
     }
 }
-
-
-
 
 
 
