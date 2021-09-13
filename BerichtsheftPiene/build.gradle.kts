@@ -23,6 +23,23 @@ dependencies {
    // testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
 }
 
+val mainClass = "MainKt" // replace it!
+
+tasks {
+    register("fatJar", Jar::class.java) {
+        archiveClassifier.set("all")
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        manifest {
+            attributes("Main-Class" to mainClass)
+        }
+        from(configurations.runtimeClasspath.get()
+            .onEach { println("add from dependencies: ${it.name}") }
+            .map { if (it.isDirectory) it else zipTree(it) })
+        val sourcesMain = sourceSets.main.get()
+        sourcesMain.allSource.forEach { println("add from sources: ${it.name}") }
+        from(sourcesMain.output)
+    }
+}
 tasks.test {
     useJUnit()
 }
