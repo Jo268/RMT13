@@ -20,7 +20,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation("org.apache.commons:commons-csv:1.5")
-   // testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    implementation("org.junit.jupiter:junit-jupiter:5.7.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.0")
 }
 
 val mainClass = "MainKt" // replace it!

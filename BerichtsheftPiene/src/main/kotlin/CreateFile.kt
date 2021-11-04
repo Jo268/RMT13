@@ -1,4 +1,3 @@
-import okhttp3.OkHttpClient
 import java.io.File
 import java.time.LocalDate
 import java.time.temporal.WeekFields
