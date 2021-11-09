@@ -19,12 +19,6 @@ public class Main {
         char[] eingabe = string.toUpperCase(Locale.ROOT).toCharArray();
         char[] ausgabe = new char[eingabe.length];
         int zeiger = 0;
-        // Test für Umlaute
-        for(char c : eingabe){
-            if(c == 'ö'){
-
-            }
-        }
         // Verschlüsselung
         for (int i = 0; i < eingabe.length; i++) {
             char value = eingabe[i];
