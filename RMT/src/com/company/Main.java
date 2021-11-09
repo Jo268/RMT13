@@ -6,10 +6,14 @@ import java.util.Locale;
 public class Main {
 
     public static void main(String[] args) {
-        new Main().verschluessele("?Hier! eingeben, was du willst!");
+
+        new Main().verschluessele("Jo luca Piene");
+
+        double ergebnis = new BauernMultiplikation().multipliziereWieRussischeBauern(2, 10);
+        System.out.println(ergebnis);
     }
 
-    // ROT13 Methode
+    // RMT13 Methode
     public void verschluessele(String string) {
 
         String meinAlphabet = "?!., abcdefghijklmnopqrstuvwxyz";
