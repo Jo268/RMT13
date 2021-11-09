@@ -1,5 +1,5 @@
 package com.company;
-
+// Berechnet ob eine Zahl fröhlich ist.
 public class Main {
 
     public static void main(String[] args) {
